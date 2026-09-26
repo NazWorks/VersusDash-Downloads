@@ -1,6 +1,6 @@
 # VersusDash Downloads
 
-Public family-test builds and the stable download page for VersusDash by NazWorks.
+Public early-access builds and the stable download page for VersusDash by NazWorks.
 
 Visit: https://nazworks.github.io/VersusDash-Downloads/
 

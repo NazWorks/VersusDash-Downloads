@@ -10,7 +10,9 @@
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; color: #effcff; background: radial-gradient(circle at 75% 15%, #235680 0, transparent 35%), linear-gradient(145deg, #10182f, #132a47 55%, #183a51); }
     main { width: min(760px, calc(100% - 32px)); margin: 0 auto; padding: 9vh 0 64px; }
+    .topline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
     .eyebrow { color: #9ff8ff; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .porto { color: #ffc95f; font-weight: 750; letter-spacing: .03em; }
     h1 { margin: 12px 0 16px; font-size: clamp(3rem, 9vw, 6.5rem); line-height: .9; letter-spacing: -.06em; }
     .lead { max-width: 620px; color: #cce6f0; font-size: clamp(1.15rem, 3vw, 1.45rem); line-height: 1.5; }
     .card { margin-top: 38px; padding: 28px; border: 1px solid #6cf5df55; border-radius: 24px; background: #0b1528cc; box-shadow: 0 24px 80px #0008; backdrop-filter: blur(12px); }
@@ -27,9 +29,12 @@
 </head>
 <body>
   <main>
-    <div class="eyebrow">NazWorks presents</div>
+    <div class="topline">
+      <div class="eyebrow">NazWorks presents</div>
+      <div class="porto">Made with ♥ in Porto, Portugal</div>
+    </div>
     <h1>Versus<br>Dash</h1>
-    <p class="lead">Race together through fast, icy courses. Download the current Mac family-test build and join the hosted room.</p>
+    <p class="lead">Race together through fast, icy courses. Download the latest Mac early-access build and join the community on the hosted server.</p>
     <section class="card" aria-live="polite">
       <p class="version" id="version">Finding the current release…</p>
       <a class="download" id="download" aria-disabled="true">Preparing download…</a>
@@ -42,7 +47,7 @@
         <li>Join <code>149.248.216.93</code>. VersusDash uses UDP port 7000.</li>
       </ol>
     </section>
-    <footer>Family-test software from <a href="https://github.com/NazWorks/VersusDash-Downloads">NazWorks</a>. Releases are published through GitHub.</footer>
+    <footer>Built by <a href="https://github.com/NazWorks/VersusDash-Downloads">NazWorks</a> for players everywhere. Releases are published through GitHub.</footer>
   </main>
   <script>
     const releasesUrl = "https://api.github.com/repos/NazWorks/VersusDash-Downloads/releases?per_page=20";
@@ -61,7 +66,7 @@
         for (const release of candidates) {
           const asset = release.assets.find(item => item.name.endsWith("macOS-universal.zip"));
           if (!asset) continue;
-          version.textContent = `${release.name || release.tag_name}${release.prerelease ? " · Family test" : ""}`;
+          version.textContent = `${release.name || release.tag_name}${release.prerelease ? " · Early access" : ""}`;
           download.textContent = "Download for Mac";
           download.href = asset.browser_download_url;
           download.removeAttribute("aria-disabled");
