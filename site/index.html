@@ -21,6 +21,7 @@
     .download:hover { transform: translateY(-2px); box-shadow: 0 12px 32px #6cf5df44; }
     .download[aria-disabled="true"] { opacity: .55; pointer-events: none; }
     .meta { margin: 18px 0 0; color: #a8bfcb; line-height: 1.6; }
+    .trust { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; padding: 7px 11px; border: 1px solid #6cf5df66; border-radius: 999px; color: #bafff2; background: #12332f99; font-size: .9rem; font-weight: 750; }
     ol { padding-left: 22px; color: #d7e9ef; line-height: 1.65; }
     code { color: #ffc95f; overflow-wrap: anywhere; }
     footer { margin-top: 30px; color: #91a9b6; font-size: .9rem; }
@@ -39,11 +40,12 @@
       <p class="version" id="version">Finding the current release…</p>
       <a class="download" id="download" aria-disabled="true">Preparing download…</a>
       <p class="meta" id="details">Universal build for Apple silicon and Intel Macs.</p>
+      <p class="trust" aria-label="Apple notarized"><span aria-hidden="true">✓</span> Apple notarized</p>
       <h2>Install</h2>
       <ol>
         <li>Download and open the ZIP.</li>
         <li>Move <strong>VersusDash</strong> into Applications.</li>
-        <li>On the first launch, Control-click the app, choose <strong>Open</strong>, then confirm.</li>
+        <li>Open <strong>VersusDash</strong> normally from Applications.</li>
         <li>Join <code>149.248.216.93</code>. VersusDash uses UDP port 7000.</li>
       </ol>
     </section>
