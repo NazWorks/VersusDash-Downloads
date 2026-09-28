@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10182f">
+  <link rel="icon" href="versusdash-icon.svg" type="image/svg+xml">
   <title>Download VersusDash</title>
   <style>
     :root { color-scheme: dark; font-family: ui-rounded, "SF Pro Rounded", system-ui, sans-serif; }
@@ -13,7 +14,9 @@
     .topline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
     .eyebrow { color: #9ff8ff; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
     .porto { color: #ffc95f; font-weight: 750; letter-spacing: .03em; }
-    h1 { margin: 12px 0 16px; font-size: clamp(3rem, 9vw, 6.5rem); line-height: .9; letter-spacing: -.06em; }
+    .brand { display: flex; align-items: center; gap: clamp(16px, 4vw, 30px); margin: 18px 0 20px; }
+    .brand-mark { width: clamp(88px, 17vw, 132px); height: auto; flex: 0 0 auto; border-radius: 24%; box-shadow: 0 18px 48px #0007, 0 0 34px #6cf5df22; }
+    h1 { margin: 0; font-size: clamp(3rem, 9vw, 6.5rem); line-height: .9; letter-spacing: -.06em; }
     .lead { max-width: 620px; color: #cce6f0; font-size: clamp(1.15rem, 3vw, 1.45rem); line-height: 1.5; }
     .card { margin-top: 38px; padding: 28px; border: 1px solid #6cf5df55; border-radius: 24px; background: #0b1528cc; box-shadow: 0 24px 80px #0008; backdrop-filter: blur(12px); }
     .version { margin: 0 0 18px; color: #9ff8ff; font-weight: 700; }
@@ -34,7 +37,10 @@
       <div class="eyebrow">NazWorks presents</div>
       <div class="porto">Made with ♥ in Porto, Portugal</div>
     </div>
-    <h1>Versus<br>Dash</h1>
+    <div class="brand">
+      <img class="brand-mark" src="versusdash-icon.svg" alt="" width="132" height="132">
+      <h1>Versus<br>Dash</h1>
+    </div>
     <p class="lead">Race together through fast, icy courses. Download the latest Mac early-access build and join the community on the hosted server.</p>
     <section class="card" aria-live="polite">
       <p class="version" id="version">Finding the current release…</p>

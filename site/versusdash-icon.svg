@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07142d"/>
+      <stop offset="0.55" stop-color="#123d70"/>
+      <stop offset="1" stop-color="#4ae6ff"/>
+    </linearGradient>
+    <linearGradient id="ice" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.35" stop-color="#bdf6ff"/>
+      <stop offset="1" stop-color="#42b8ef"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="#07142d"/>
+  <rect width="1024" height="1024" rx="220" fill="url(#sky)"/>
+  <circle cx="738" cy="260" r="154" fill="#b9f6ff" opacity=".15"/>
+  <path d="M60 746 270 510l118 126 143-211 140 178 105-115 188 258v218H60Z" fill="#071729" opacity=".72"/>
+  <path d="M74 760 270 538l116 124 145-212 140 180 104-116 176 246Z" fill="url(#ice)" opacity=".97"/>
+  <g filter="url(#glow)">
+    <path d="M40 230h125l100 305 100-305h125L335 671H195Z" fill="#fff"/>
+    <path d="M514 230h189c171 0 280 77 280 220s-109 221-280 221H514Zm134 112v217h55c91 0 141-35 141-109s-50-108-141-108Z" fill="#70f1ff"/>
+  </g>
+  <path d="M138 824h748" stroke="#fff" stroke-width="24" stroke-linecap="round" opacity=".82"/>
+</svg>
