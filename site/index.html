@@ -87,7 +87,9 @@
           download.textContent = "Download for Mac";
           download.href = asset.browser_download_url;
           download.removeAttribute("aria-disabled");
-          details.textContent = `Universal Apple silicon + Intel build · ${(asset.size / 1048576).toFixed(1)} MB`;
+          const sizeMiB = (asset.size / 1048576).toFixed(1);
+          details.textContent = `Universal Apple silicon + Intel build · ${sizeMiB} MiB`;
+          details.title = `${asset.size.toLocaleString()} bytes reported by GitHub Releases`;
           return;
         }
         throw new Error("no Mac release found");
