@@ -79,7 +79,9 @@
         return response.json();
       })
       .then(releases => {
-        const candidates = releases.filter(release => !release.draft);
+        const candidates = releases
+          .filter(release => !release.draft)
+          .sort((left, right) => Date.parse(right.published_at) - Date.parse(left.published_at));
         for (const release of candidates) {
           const asset = release.assets.find(item => item.name.endsWith("macOS-universal.zip"));
           if (!asset) continue;
