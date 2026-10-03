@@ -116,7 +116,10 @@
         date.textContent = new Intl.DateTimeFormat(undefined, { dateStyle: "long" }).format(new Date(release.published_at));
         const body = document.createElement("p");
         body.className = "release-body";
-        body.textContent = (release.body || "Build details and checksums are available on GitHub.").trim();
+        const publicBody = (release.body || "")
+          .split(/\nSource revision:/, 1)[0]
+          .trim();
+        body.textContent = publicBody || "See the release on GitHub for details.";
         article.append(heading, date, body);
         releaseNotes.append(article);
       }
