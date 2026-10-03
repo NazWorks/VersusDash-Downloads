@@ -28,6 +28,18 @@
     .feature-note h2 { margin: 6px 0 10px; font-size: 1.8rem; }
     .feature-note p { margin: 0; color: #d7e9ef; line-height: 1.65; }
     .preview-pill { display: inline-block; padding: 5px 10px; border-radius: 999px; color: #21182e; background: #ffc95f; font-size: .78rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+    .platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 20px; }
+    .platform { padding: 16px; border: 1px solid #ffffff18; border-radius: 16px; background: #ffffff08; }
+    .platform strong { display: block; margin-bottom: 5px; }
+    .platform span { color: #a8bfcb; }
+    .notes { margin-top: 38px; }
+    .notes h2 { margin-bottom: 8px; font-size: 2rem; }
+    .notes-intro { margin-top: 0; color: #a8bfcb; }
+    .release-note { margin-top: 14px; padding: 20px; border: 1px solid #ffffff20; border-radius: 18px; background: #0b152899; }
+    .release-note h3 { margin: 0 0 6px; }
+    .release-note h3 a { color: #9ff8ff; text-decoration: none; }
+    .release-date { margin: 0 0 12px; color: #91a9b6; font-size: .9rem; }
+    .release-body { margin: 0; color: #d7e9ef; line-height: 1.55; white-space: pre-wrap; }
     .trust { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 0; padding: 7px 11px; border: 1px solid #6cf5df66; border-radius: 999px; color: #bafff2; background: #12332f99; font-size: .9rem; font-weight: 750; }
     ol { padding-left: 22px; color: #d7e9ef; line-height: 1.65; }
     code { color: #ffc95f; overflow-wrap: anywhere; }
@@ -45,7 +57,7 @@
       <img class="brand-mark" src="versusdash-icon.svg" alt="" width="132" height="132">
       <h1>Versus<br>Dash</h1>
     </div>
-    <p class="lead">Race together through fast, icy courses. Download the latest Mac early-access build, create a hosted room, and share its short code with friends.</p>
+    <p class="lead">Race together through fast, icy courses. Download the latest early-access build for Mac, create a hosted room, and share its short code with friends.</p>
     <section class="card" aria-live="polite">
       <p class="version" id="version">Finding the current release…</p>
       <a class="download" id="download" aria-disabled="true">Preparing download…</a>
@@ -60,9 +72,19 @@
       </ol>
     </section>
     <section class="feature-note" aria-labelledby="skin-preview-title">
-      <span class="preview-pill">In preview</span>
+      <span class="preview-pill">Rewards in progress</span>
       <h2 id="skin-preview-title">Meet the Skin Toy Box</h2>
-      <p>Choose from eight playful cube skins and carry your look into multiplayer races. Every skin is freely unlocked while the feature is in preview. Customizations will move into a child-friendly shop later, using clearly earned play currency and permanent ownership.</p>
+      <p>Start with Mint Circuit, earn Solar Pop with your first finish, and preview the rest of the eight-skin launch collection. More permanent rewards will arrive through Glint's child-friendly Trader shop as its play-earned economy takes shape.</p>
+      <div class="platforms" aria-label="Platform availability">
+        <div class="platform"><strong>macOS</strong><span>Public alpha available now</span></div>
+        <div class="platform"><strong>Windows</strong><span>Packaging planned</span></div>
+        <div class="platform"><strong>Android and iPad</strong><span>Mobile testing planned</span></div>
+      </div>
+    </section>
+    <section class="notes" aria-labelledby="release-notes-title">
+      <h2 id="release-notes-title">Release notes</h2>
+      <p class="notes-intro">The latest changes, published from the same signed release artifacts as the download.</p>
+      <div id="release-notes" aria-live="polite">Loading recent releases…</div>
     </section>
     <footer>Built by <a href="https://github.com/NazWorks/VersusDash-Downloads">NazWorks</a> for players everywhere. Releases are published through GitHub.</footer>
   </main>
@@ -72,6 +94,33 @@
     const version = document.querySelector("#version");
     const download = document.querySelector("#download");
     const details = document.querySelector("#details");
+    const releaseNotes = document.querySelector("#release-notes");
+
+    function renderReleaseNotes(releases) {
+      releaseNotes.textContent = "";
+      const published = releases.filter(release => !release.draft).slice(0, 4);
+      if (!published.length) {
+        releaseNotes.textContent = "No release notes have been published yet.";
+        return;
+      }
+      for (const release of published) {
+        const article = document.createElement("article");
+        article.className = "release-note";
+        const heading = document.createElement("h3");
+        const link = document.createElement("a");
+        link.href = release.html_url;
+        link.textContent = release.name || release.tag_name;
+        heading.append(link);
+        const date = document.createElement("p");
+        date.className = "release-date";
+        date.textContent = new Intl.DateTimeFormat(undefined, { dateStyle: "long" }).format(new Date(release.published_at));
+        const body = document.createElement("p");
+        body.className = "release-body";
+        body.textContent = (release.body || "Build details and checksums are available on GitHub.").trim();
+        article.append(heading, date, body);
+        releaseNotes.append(article);
+      }
+    }
 
     fetch(releasesUrl, { headers: { Accept: "application/vnd.github+json" } })
       .then(response => {
@@ -82,6 +131,7 @@
         const candidates = releases
           .filter(release => !release.draft)
           .sort((left, right) => Date.parse(right.published_at) - Date.parse(left.published_at));
+        renderReleaseNotes(candidates);
         for (const release of candidates) {
           const asset = release.assets.find(item => item.name.endsWith("macOS-universal.zip"));
           if (!asset) continue;
@@ -102,6 +152,7 @@
         download.href = fallbackUrl;
         download.removeAttribute("aria-disabled");
         details.textContent = "Choose the newest macOS universal ZIP from GitHub Releases.";
+        releaseNotes.innerHTML = `<a href="${fallbackUrl}">Read release notes on GitHub</a>`;
       });
   </script>
 </body>
