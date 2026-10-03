@@ -77,13 +77,13 @@
       <p>Start with Mint Circuit, earn Solar Pop with your first finish, and preview the rest of the eight-skin launch collection. More permanent rewards will arrive through Glint's child-friendly Trader shop as its play-earned economy takes shape.</p>
       <div class="platforms" aria-label="Platform availability">
         <div class="platform"><strong>macOS</strong><span>Public alpha available now</span></div>
-        <div class="platform"><strong>Windows</strong><span>Packaging planned</span></div>
-        <div class="platform"><strong>Android and iPad</strong><span>Mobile testing planned</span></div>
+        <div class="platform"><strong>iPhone and iPad</strong><span>TestFlight release in progress</span></div>
+        <div class="platform"><strong>Windows and Android</strong><span>Deferred until after the current alpha</span></div>
       </div>
     </section>
     <section class="notes" aria-labelledby="release-notes-title">
       <h2 id="release-notes-title">Release notes</h2>
-      <p class="notes-intro">The latest changes, published from the same signed release artifacts as the download.</p>
+      <p class="notes-intro">Changes in the current build, published from the same signed release artifact as the download.</p>
       <div id="release-notes" aria-live="polite">Loading recent releases…</div>
     </section>
     <footer>Built by <a href="https://github.com/NazWorks/VersusDash-Downloads">NazWorks</a> for players everywhere. Releases are published through GitHub.</footer>
@@ -98,7 +98,7 @@
 
     function renderReleaseNotes(releases) {
       releaseNotes.textContent = "";
-      const published = releases.filter(release => !release.draft).slice(0, 4);
+      const published = releases.filter(release => !release.draft).slice(0, 1);
       if (!published.length) {
         releaseNotes.textContent = "No release notes have been published yet.";
         return;
