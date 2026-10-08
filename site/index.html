@@ -23,7 +23,12 @@
     .download { display: inline-block; padding: 15px 22px; border-radius: 14px; color: #10182f; background: #6cf5df; font-size: 1.1rem; font-weight: 900; text-decoration: none; transition: transform .15s, box-shadow .15s; }
     .download:hover { transform: translateY(-2px); box-shadow: 0 12px 32px #6cf5df44; }
     .download[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+    .downloads { display: flex; flex-wrap: wrap; gap: 12px; }
+    .download.windows { color: #effcff; background: #3266c9; }
+    .download.windows:hover { box-shadow: 0 12px 32px #3266c966; }
+    .build-meta { display: grid; gap: 4px; margin: 18px 0 0; }
     .meta { margin: 18px 0 0; color: #a8bfcb; line-height: 1.6; }
+    .build-meta .meta { margin: 0; }
     .feature-note { margin-top: 24px; padding: 24px 28px; border: 1px solid #ffc95f66; border-radius: 24px; background: linear-gradient(135deg, #221c35dd, #122b3ddd); box-shadow: 0 20px 60px #0005; }
     .feature-note h2 { margin: 6px 0 10px; font-size: 1.8rem; }
     .feature-note p { margin: 0; color: #d7e9ef; line-height: 1.65; }
@@ -58,18 +63,31 @@
       <img class="brand-mark" src="versusdash-icon.svg" alt="" width="132" height="132">
       <h1>Versus<br>Dash</h1>
     </div>
-    <p class="lead">Race together through fast, icy courses. Download the latest early-access build for Mac, create a hosted room, and share its short code with friends.</p>
+    <p class="lead">Race together through fast, icy courses. Download the latest early-access desktop build, create a hosted room, and share its short code with friends.</p>
     <section class="card" aria-live="polite">
       <p class="version" id="version">Finding the current release…</p>
-      <a class="download" id="download" aria-disabled="true">Preparing download…</a>
-      <p class="meta" id="details">Universal build for Apple silicon and Intel Macs.</p>
+      <div class="downloads">
+        <a class="download" id="mac-download" aria-disabled="true">Preparing Mac download…</a>
+        <a class="download windows" id="windows-download" aria-disabled="true">Windows build coming next</a>
+      </div>
+      <div class="build-meta">
+        <p class="meta" id="mac-details">Mac: universal Apple silicon and Intel build.</p>
+        <p class="meta" id="windows-details">Windows: 64-bit alpha packaging is in progress.</p>
+      </div>
       <p class="trust" aria-label="Apple notarized"><span aria-hidden="true">✓</span> Apple notarized</p>
-      <h2>Install</h2>
+      <h2>Install on Mac</h2>
       <ol>
         <li>Download and open the ZIP.</li>
         <li>Move <strong>VersusDash</strong> into Applications.</li>
         <li>Open <strong>VersusDash</strong> normally from Applications.</li>
         <li>Choose <strong>Create Room</strong> and share the room code, or choose <strong>Join Room</strong> and enter a code from a friend.</li>
+      </ol>
+      <h2>Install on Windows</h2>
+      <ol>
+        <li>Download and extract the Windows ZIP.</li>
+        <li>Run <strong>VersusDash.exe</strong>.</li>
+        <li>During the unsigned alpha, Windows may require <strong>More info → Run anyway</strong>. Confirm this page is the source before proceeding.</li>
+        <li>Create or join a room with the same short codes used by Mac players.</li>
       </ol>
     </section>
     <section class="feature-note" aria-labelledby="skin-preview-title">
@@ -79,7 +97,8 @@
       <div class="platforms" aria-label="Platform availability">
         <div class="platform"><strong>macOS</strong><span>Public alpha available now</span></div>
         <div class="platform"><strong>iPhone and iPad</strong><span>TestFlight release in progress</span></div>
-        <div class="platform"><strong>Windows and Android</strong><span>Deferred until after the current alpha</span></div>
+        <div class="platform"><strong>Windows</strong><span>64-bit alpha arriving next</span></div>
+        <div class="platform"><strong>Android</strong><span>Deferred until a later platform cycle</span></div>
       </div>
     </section>
     <section class="notes" aria-labelledby="release-notes-title">
@@ -96,8 +115,10 @@
     const releasesUrl = "https://api.github.com/repos/NazWorks/VersusDash-Downloads/releases?per_page=20";
     const fallbackUrl = "https://github.com/NazWorks/VersusDash-Downloads/releases";
     const version = document.querySelector("#version");
-    const download = document.querySelector("#download");
-    const details = document.querySelector("#details");
+    const macDownload = document.querySelector("#mac-download");
+    const windowsDownload = document.querySelector("#windows-download");
+    const macDetails = document.querySelector("#mac-details");
+    const windowsDetails = document.querySelector("#windows-details");
     const releaseNotes = document.querySelector("#release-notes");
 
     function renderReleaseNotes(releases) {
@@ -140,25 +161,34 @@
           .sort((left, right) => Date.parse(right.published_at) - Date.parse(left.published_at));
         renderReleaseNotes(candidates);
         for (const release of candidates) {
-          const asset = release.assets.find(item => item.name.endsWith("macOS-universal.zip"));
-          if (!asset) continue;
+          const macAsset = release.assets.find(item => item.name.endsWith("macOS-universal.zip"));
+          if (!macAsset) continue;
+          const windowsAsset = release.assets.find(item => item.name.endsWith("Windows-x86_64.zip"));
           version.textContent = `${release.name || release.tag_name}${release.prerelease ? " · Early access" : ""}`;
-          download.textContent = "Download for Mac";
-          download.href = asset.browser_download_url;
-          download.removeAttribute("aria-disabled");
-          const sizeMiB = (asset.size / 1048576).toFixed(1);
-          details.textContent = `Universal Apple silicon + Intel build · ${sizeMiB} MiB`;
-          details.title = `${asset.size.toLocaleString()} bytes reported by GitHub Releases`;
+          macDownload.textContent = "Download for Mac";
+          macDownload.href = macAsset.browser_download_url;
+          macDownload.removeAttribute("aria-disabled");
+          const macSizeMiB = (macAsset.size / 1048576).toFixed(1);
+          macDetails.textContent = `Mac: universal Apple silicon + Intel · ${macSizeMiB} MiB`;
+          macDetails.title = `${macAsset.size.toLocaleString()} bytes reported by GitHub Releases`;
+          if (windowsAsset) {
+            windowsDownload.textContent = "Download for Windows";
+            windowsDownload.href = windowsAsset.browser_download_url;
+            windowsDownload.removeAttribute("aria-disabled");
+            const windowsSizeMiB = (windowsAsset.size / 1048576).toFixed(1);
+            windowsDetails.textContent = `Windows: 64-bit portable ZIP · ${windowsSizeMiB} MiB`;
+            windowsDetails.title = `${windowsAsset.size.toLocaleString()} bytes reported by GitHub Releases`;
+          }
           return;
         }
         throw new Error("no Mac release found");
       })
       .catch(() => {
         version.textContent = "Release listing";
-        download.textContent = "View available builds";
-        download.href = fallbackUrl;
-        download.removeAttribute("aria-disabled");
-        details.textContent = "Choose the newest macOS universal ZIP from GitHub Releases.";
+        macDownload.textContent = "View available builds";
+        macDownload.href = fallbackUrl;
+        macDownload.removeAttribute("aria-disabled");
+        macDetails.textContent = "Choose the newest supported desktop ZIP from GitHub Releases.";
         releaseNotes.innerHTML = `<a href="${fallbackUrl}">Read release notes on GitHub</a>`;
       });
   </script>
